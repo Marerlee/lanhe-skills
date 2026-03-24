@@ -5,12 +5,20 @@
 ## 技能信息
 
 - **skill_id**: lanhe-skill-router
-- **version**: 3.0
+- **version**: 4.0
 - **updated_at**: 2026-03-25
 
 ## 触发条件
 
 用户消息以 `蓝禾技能：` 开头
+
+## 核心改变
+
+**直接读取 manifest.json**，不再扫描各个 SUMMARY.md 文件。
+
+manifest.json 是上传技能在每次上传时维护的索引文件，包含所有技能的摘要信息。
+
+---
 
 ## 执行流程
 
@@ -25,34 +33,21 @@
 
 ---
 
-### 第 2 步：直接扫描 GitHub 仓库
+### 第 2 步：获取 manifest.json
 
-使用 GitHub API 列出 skills/ 目录下的所有 SUMMARY.md：
+使用 GitHub API 直接获取 manifest.json：
 
 ```
-API: GET /repos/Marerlee/lanhe-skills/contents/skills
+API: GET /repos/Marerlee/lanhe-skills/contents/manifest.json
 ```
 
-递归获取所有 SUMMARY.md 文件路径。
+返回的 content 是 Base64 编码的，解码后得到 JSON。
 
 ---
 
-### 第 3 步：获取并解析每个 SUMMARY.md
+### 第 3 步：计算匹配度
 
-对每个 SUMMARY.md 文件：
-```
-API: GET /repos/Marerlee/lanhe-skills/contents/{path}
-```
-
-解析内容，提取：
-- skill_id
-- 触发条件
-- 语义关键词
-- 能力边界描述
-
----
-
-### 第 4 步：计算匹配度
+对 manifest.json 中的每个技能计算匹配得分：
 
 ```
 匹配得分 = 
@@ -63,10 +58,10 @@ API: GET /repos/Marerlee/lanhe-skills/contents/{path}
 
 ---
 
-### 第 5 步：返回结果
+### 第 4 步：返回结果
 
 **匹配度 > 85%**：
-直接执行最佳匹配的 SKILL.md
+直接执行最佳匹配的技能
 
 **匹配度 60-85%**：
 显示 Top 2 技能，请用户确认：
@@ -97,18 +92,18 @@ API: GET /repos/Marerlee/lanhe-skills/contents/{path}
 
 ---
 
-### 第 6 步：执行选中的技能
+### 第 5 步：执行选中的技能
 
-读取对应技能的 SKILL.md 并执行。
+根据 manifest.json 中的 `path` 字段，读取对应技能的 SKILL.md 并执行。
 
 **获取 SKILL.md**：
 ```
-API: GET /repos/Marerlee/lanhe-skills/contents/{skill_path}/SKILL.md
+API: GET /repos/Marerlee/lanhe-skills/contents/{path}/SKILL.md
 ```
 
 ---
 
-### 第 7 步：执行后确认
+### 第 6 步：执行后确认
 
 ```
 ✅ 已执行 【技能名称】
@@ -133,16 +128,24 @@ API: GET /repos/Marerlee/lanhe-skills/contents/{skill_path}/SKILL.md
 ## GitHub API 调用示例
 
 ```bash
-# 1. 获取 skills 目录结构
-curl -s "https://api.github.com/repos/Marerlee/lanhe-skills/contents/skills" \
+# 获取 manifest.json（单次调用）
+curl -s "https://api.github.com/repos/Marerlee/lanhe-skills/contents/manifest.json" \
   -H "Accept: application/vnd.github.v3+json"
 
-# 2. 获取单个文件内容
-curl -s "https://api.github.com/repos/Marerlee/lanhe-skills/contents/skills/%E4%BA%9A%E9%A9%AC%E9%80%8A%E6%A0%87%E9%A2%98%E4%BC%98%E5%8C%96/SUMMARY.md" \
-  -H "Accept: application/vnd.github.v3+json"
+# 响应示例
+{
+  "content": "eyJ2ZXJzaW9uIjoiMjAyNi0wMy0yNSIsICJza2lsbHMiOiBbXX0=",  // Base64 encoded
+  "sha": "xxx",
+  ...
+}
+
+# 解码后
+{
+  "version": "2026-03-25",
+  "updated_at": "2026-03-25T16:16:00Z",
+  "skills": [...]
+}
 ```
-
-返回的 content 字段是 Base64 编码的。
 
 ---
 
@@ -156,9 +159,31 @@ curl -s "https://api.github.com/repos/Marerlee/lanhe-skills/contents/skills/%E4%
 
 ---
 
+## manifest.json 结构
+
+```json
+{
+  "version": "2026-03-25",
+  "updated_at": "2026-03-25T16:16:00Z",
+  "skills": [
+    {
+      "skill_id": "amazon-title-optimization",
+      "name": "亚马逊标题优化",
+      "path": "skills/亚马逊标题优化/",
+      "triggers": ["标题怎么写", "优化 listing", ...],
+      "keywords": ["亚马逊", "标题", "listing", ...],
+      "capabilities": "✅ 能：...\n❌ 不能：...",
+      "output_format": "Markdown 清单"
+    }
+  ]
+}
+```
+
+---
+
 ## 注意事项
 
-- **直接调用 GitHub API**，不需要 clone 到本地
-- 始终获取最新版本
-- API 返回的 content 是 Base64 编码，需要解码
-- 不检索 SKILL.md，只检索 SUMMARY.md
+- **只需调用 1 次 GitHub API** 获取 manifest.json
+- manifest.json 由上传技能维护，每次上传新技能时自动更新
+- 不再需要扫描各个 SUMMARY.md 文件
+- 始终使用最新的 manifest.json（包含所有技能的索引）

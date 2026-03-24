@@ -5,7 +5,7 @@
 ## 技能信息
 
 - **skill_id**: lanhe-upload-skill
-- **version**: 2.0
+- **version**: 3.0
 - **updated_at**: 2026-03-25
 
 ## 触发条件
@@ -20,11 +20,11 @@
 
 ### 第 1 步：定位 SKILL.md
 
-从对话历史中分析，找出用户刚才确认的技能名称和内容。
+从对话历史中分析，找出用户刚才确认的技能。
 
 可能情况：
-- **情况 A**：用户在对话中刚刚描述并确认了技能，SKILL.md 存在于 `skills/` 目录下
-- **情况 B**：用户提供技能名称，从 skills/ 目录查找
+- **情况 A**：用户在对话中刚刚确认了技能，SKILL.md 存在于本地 skills/ 目录下
+- **情况 B**：用户提供技能名称，从本地 skills/ 目录查找
 - **情况 C**：用户提供技能内容（粘贴），直接使用
 
 **询问用户**：
@@ -46,48 +46,19 @@
 
 读取用户选定的 SKILL.md 文件，提取以下信息：
 
-```
-【技能名称】
-【skill_id】
-【触发条件】（从 SKILL.md 的触发条件部分提取）
-【语义关键词】（从内容中分析提取）
-【能力边界】（从执行步骤和注意事项中分析）
-【执行需要】（从「执行所需信息」部分提取）
-【输出格式】（从输出模板部分提取）
-```
+- skill_id
+- 技能名称
+- 触发条件
+- 语义关键词（从内容中分析提取）
+- 能力边界
+- 执行需要
+- 输出格式
 
 ---
 
 ### 第 3 步：生成 SUMMARY.md 初稿
 
-根据分析结果，生成标准格式的 SUMMARY.md：
-
-```markdown
-# 技能摘要
-
-## 基础信息
-- **skill_id**: {从 SKILL.md 提取或自动生成}
-- **目录路径**: skills/{技能名称}/
-- **version**: 1.0
-- **updated_by**: {待补充}
-- **updated_at**: {当前日期}
-
-## 触发条件
-{从 SKILL.md 提取的触发条件列表}
-
-## 语义关键词
-{分析生成的关键词列表，5-10 个}
-
-## 能力边界
-- ✅ {能做什么}
-- ❌ {不能做什么}
-
-## 执行需要
-{执行该技能前需要用户提供的信息}
-
-## 输出格式
-{输出内容格式描述}
-```
+根据分析结果，生成标准格式的 SUMMARY.md。
 
 ---
 
@@ -120,8 +91,8 @@ xxx, xxx, xxx, xxx, xxx
 
 请确认摘要内容：
 1️⃣ 确认无误，开始上传
-2️⃣ 有小问题，我来调整（请说明哪里需要改）
-3️⃣ 重新生成（基于 SKILL.md 重新分析）
+2️⃣ 有小问题，我来调整
+3️⃣ 重新生成
 
 格式检查：⏳ 检查中...
 ```
@@ -141,52 +112,59 @@ xxx, xxx, xxx, xxx, xxx
 | 执行需要 | 非空 | ✅/❌ |
 | 输出格式 | 非空 | ✅/❌ |
 
-**如果检查不通过**：
-```
-⚠️ 格式检查未通过，修正中...
-
-【问题】
-• 语义关键词少于 5 个
-• 能力边界不完整
-
-【已自动修正】
-• 补充了语义关键词
-• 完善了能力边界
-
-请再次确认：
-1️⃣ 确认无误，开始上传
-2️⃣ 继续调整（请说明）
-```
+**如果检查不通过**：修正 → 再次展示 → 再次检查（循环）
 
 ---
 
-### 第 6 步：用户确认后写入文件
+### 第 6 步：写入 SUMMARY.md
 
-用户确认后，将 SUMMARY.md 写入对应目录：
-
-```bash
-skills/{技能名称}/SUMMARY.md
-```
+用户确认后，写入 `skills/{技能名称}/SUMMARY.md`
 
 ---
 
-### 第 7 步：推送到 GitHub
+### 第 7 步：更新 manifest.json
+
+读取现有的 `manifest.json`，添加或更新该技能的条目：
+
+```json
+{
+  "skill_id": "xxx",
+  "name": "xxx",
+  "path": "skills/xxx/",
+  "triggers": ["..."],
+  "keywords": ["..."],
+  "capabilities": "✅ ...\n❌ ...",
+  "output_format": "..."
+}
+```
+
+同时更新 manifest.json 的 `version` 和 `updated_at`。
+
+---
+
+### 第 8 步：推送到 GitHub
+
+依次推送以下文件到 GitHub：
+
+1. `skills/{技能名称}/SKILL.md`
+2. `skills/{技能名称}/SUMMARY.md`
+3. `manifest.json`
 
 ```
 ⏳ 正在推送 GitHub...
 ```
 
-执行：
+使用 GitHub API 逐个上传：
+
 ```bash
-cd ~/.openclaw/workspace/lanhe-skills
-git add skills/{技能名称}/
-git commit -m "新增技能：{技能名称}"
-git push origin main
+# 获取文件 SHA（如果已存在）
+# 编码内容为 Base64
+# PUT 到对应路径
 ```
 
 ---
 
-### 第 8 步：完成确认
+### 第 9 步：完成确认
 
 成功：
 ```
@@ -197,6 +175,7 @@ git push origin main
 【文件】
 • SKILL.md
 • SUMMARY.md
+• manifest.json（已更新）
 
 🌐 https://github.com/Marerlee/lanhe-skills
 ```
@@ -221,7 +200,36 @@ xxx
   ↓ 不通过
 修改 → 展示 → 检查 → ...（循环直到通过）
   ↓ 通过
-推送 GitHub
+写入文件 → 更新 manifest.json → 推送 GitHub
+```
+
+---
+
+## manifest.json 更新逻辑
+
+```javascript
+// 伪代码
+const manifest = readJSON('manifest.json');
+const skillEntry = {
+  skill_id: skillId,
+  name: skillName,
+  path: `skills/${skillName}/`,
+  triggers: [...],
+  keywords: [...],
+  capabilities: "✅ ...\n❌ ...",
+  output_format: "..."
+};
+
+// 检查是否已存在
+const existingIndex = manifest.skills.findIndex(s => s.skill_id === skillId);
+if (existingIndex >= 0) {
+  manifest.skills[existingIndex] = skillEntry;
+} else {
+  manifest.skills.push(skillEntry);
+}
+
+manifest.version = new Date().toISOString().split('T')[0];
+manifest.updated_at = new Date().toISOString();
 ```
 
 ---
@@ -229,5 +237,5 @@ xxx
 ## 注意事项
 
 - 如果 skills/ 目录下没有找到对应的 SKILL.md，询问用户是粘贴内容还是指定名称
-- GitHub 推送需要网络连接，如果失败提供手动推送指引
-- SUMMARY.md 的 skill_id 如果 SKILL.md 中没有，从技能名称生成（中文→拼音+连字符）
+- manifest.json 是调用技能的索引文件，**每次上传必须同时更新**
+- GitHub 推送使用 API，需要正确的 token 和文件 SHA

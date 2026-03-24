@@ -1,32 +1,5 @@
 {
   "version": "2026-03-25",
-  "updated_at": "2026-03-25T16:16:00Z",
-  "skills": [
-    {
-      "skill_id": "amazon-title-optimization",
-      "name": "亚马逊标题优化",
-      "path": "skills/亚马逊标题优化/",
-      "triggers": [
-        "亚马逊标题怎么写",
-        "帮我优化 listing 标题",
-        "产品标题包含什么关键词",
-        "亚马逊关键词怎么放",
-        "标题被降权了怎么办"
-      ],
-      "keywords": [
-        "亚马逊",
-        "标题",
-        "listing",
-        "关键词",
-        "优化",
-        "Amazon",
-        "搜索排名",
-        "A9算法",
-        "产品标题",
-        "Search terms"
-      ],
-      "capabilities": "✅ 能：标题结构优化、关键词布局检测、违规词检查、竞品标题参考\n❌ 不能：账号申诉指导、物流问题解答、关税计算、选品建议",
-      "output_format": "Markdown 清单，包含优化标题、关键词建议、调整说明"
-    }
-  ]
+  "updated_at": "2026-03-25T16:30:00Z",
+  "skills": []
 }

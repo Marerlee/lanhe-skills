@@ -63,3 +63,7 @@ AI 读取 manifest.json（所有技能索引）
 ## 🌐 仓库地址
 
 https://github.com/Marerlee/lanhe-skills
+
+---
+
+🔥 **让我们一起打造蓝禾自己的 OpenClaw 社区！**

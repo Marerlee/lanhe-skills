@@ -7,6 +7,7 @@
 ```
 蓝禾技能库/
 ├── SKILL.md                    # 主入口技能（路由逻辑）
+├── manifest.json               # 总摘要索引（所有技能摘要）
 ├── upload-skill/              # 上传技能
 │   └── SKILL.md
 ├── skills/                    # 子技能目录
@@ -17,13 +18,39 @@
 └── README.md
 ```
 
+## 核心设计
+
+### manifest.json - 统一索引
+
+每次上传新技能时，`manifest.json` 会自动更新，包含所有技能的摘要信息。
+
+调用技能时**只需读取这一个文件**，无需扫描多个文件。
+
+```json
+{
+  "version": "2026-03-25",
+  "updated_at": "2026-03-25T16:16:00Z",
+  "skills": [
+    {
+      "skill_id": "amazon-title-optimization",
+      "name": "亚马逊标题优化",
+      "path": "skills/亚马逊标题优化/",
+      "triggers": ["标题怎么写", ...],
+      "keywords": ["亚马逊", "标题", ...],
+      "capabilities": "✅ 能：...\n❌ 不能：...",
+      "output_format": "Markdown 清单"
+    }
+  ]
+}
+```
+
 ## 使用方式
 
 ### 调用技能
 
 发送 `蓝禾技能：xxx` 描述你的问题，AI 会自动：
 
-1. **直接调用 GitHub API** 获取最新的 SUMMARY.md
+1. **获取 manifest.json**（单次 API 调用）
 2. **匹配技能** 计算匹配度
 3. **执行技能** 读取 SKILL.md 并执行
 4. **确认结果** 用户满意后结束
@@ -32,15 +59,6 @@
 
 发送 `上传蓝禾技能`，启动创建向导。
 
-## 技能结构
-
-每个子技能包含两个文件：
-
-| 文件 | 用途 |
-|------|------|
-| `SUMMARY.md` | 检索摘要，供路由匹配 |
-| `SKILL.md` | 完整执行逻辑 |
-
 ## 检索机制
 
 ### 调用流程
@@ -48,12 +66,12 @@
 ```
 用户：「蓝禾技能：标题怎么写」
     ↓
-① 直接调用 GitHub API 扫描 SUMMARY.md
-② 计算匹配得分
+① 获取 manifest.json（1 次 API 调用）
+② 在 skills 数组中计算匹配得分
 ③ 匹配 > 85% → 直接执行
    匹配 60-85% → 显示 Top 2 确认
    匹配 < 60% → 要求细化
-④ 执行 SKILL.md
+④ 获取对应 SKILL.md 并执行
 ⑤ 询问满意吗？
 ```
 
@@ -86,12 +104,14 @@
 2. AI 生成 SKILL.md → 用户确认
 3. 发送 `上传蓝禾技能`
 4. AI 生成 SUMMARY.md → 用户确认
-5. 自动推送到 GitHub
+5. **自动更新 manifest.json**
+6. 推送到 GitHub
 
 ### 更新技能
 
 1. 修改对应技能的 SKILL.md 或 SUMMARY.md
-2. 提交到 GitHub
+2. 更新 manifest.json 中的对应条目
+3. 提交到 GitHub
 
 ## 仓库地址
 

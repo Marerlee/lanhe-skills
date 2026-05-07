@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Trends 全品类分析报告 - 2026-03-17</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f5f5f5;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      margin: 0 0 15px 0;
+      font-size: 2.2rem;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      padding-bottom: 15px;
+    }
+    
+    .meta-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .meta-item {
+      background: rgba(255,255,255,0.1);
+      padding: 12px 15px;
+      border-radius: 6px;
+    }
+    
+    .meta-label {
+      font-size: 12px;
+      opacity: 0.8;
+      display: block;
+      margin-bottom: 4px;
+    }
+    
+    .meta-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .card-title {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .card-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    h2 {
+      color: #2c3e50;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      margin-top: 40px;
+      margin-bottom: 25px;
+    }
+    
+    h3 {
+      color: #34495e;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    
+    figure {
+      margin: 0;
+    }
+    
+    figcaption {
+      font-style: italic;
+      color: #888;
+      font-size: 13px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-size: 14px;
+      margin-top: 40px;
+      border-top: 1px solid #ddd;
+    }
+    
+    @media print {
+      body { 
+        background: white; 
+        padding: 0;
+      }
+      header, .card {
+        break-inside: avoid;
+      }
+      figure img {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 15px;
+      }
+      header {
+        padding: 25px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .card {
+        padding: 20px;
+      }
+      .card-value {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <header>
+    <h1>📊 Amazon 新品热销榜 - 全品类综合分析报告</h1>
+    
+    <div class="meta-info">
+      <div class="meta-item">
+        <span class="meta-label">📅 生成时间</span>
+        <span class="meta-value">2026/03/17 14:22</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">🌐 数据来源</span>
+        <span class="meta-value">https://www.amazon.com/gp/new-releases</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">📦 包含品类</span>
+        <span class="meta-value">6 个</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">🖼️ 截图文件</span>
+        <span class="meta-value">6 张</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-cards">
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">覆盖品类</div>
+      <div class="card-value">6</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🖼️</div>
+      <div class="card-title">总截图数</div>
+      <div class="card-value">6</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Top 6/品类</div>
+      <div class="card-value">36</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>各品类完整榜单</h2>
+    
+  <section id="books" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      1. 📚 图书
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-books-20260317-141328.png" alt="📚 图书 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 59.9 KB | 
+        <strong>📚 图书</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        关注新书首发、作者知名度、题材热度（小说/非虚构/教材）
+      </p>
+    </div>
+  </section>
+  <section id="digitalmusic" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      2. 🎶 数字音乐
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-digitalmusic-20260317-141328.png" alt="🎶 数字音乐 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 59.8 KB | 
+        <strong>🎶 数字音乐</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        对比单曲下载 vs 专辑销售、流媒体转化情况
+      </p>
+    </div>
+  </section>
+  <section id="movies" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      3. 🎬 影视
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-movies-20260317-141328.png" alt="🎬 影视 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 58.5 KB | 
+        <strong>🎬 影视</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        注意续集 vs 原创 IP、流媒体独占内容占比
+      </p>
+    </div>
+  </section>
+  <section id="music" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      4. 🎵 音乐
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-music-20260317-141328.png" alt="🎵 音乐 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 64.5 KB | 
+        <strong>🎵 音乐</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        区分实体黑胶 vs 数字下载，留意独立艺术家表现
+      </p>
+    </div>
+  </section>
+  <section id="software" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      5. 💻 软件
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-software-20260317-141328.png" alt="💻 软件 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 64.9 KB | 
+        <strong>💻 软件</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        分析订阅制 vs 买断制、企业级 vs 个人工具
+      </p>
+    </div>
+  </section>
+  <section id="videogames" class="category-section" style="margin-bottom: 60px; page-break-inside: avoid;">
+    <h3 style="color: #007bff; border-left: 5px solid #007bff; padding-left: 15px; margin-top: 40px;">
+      6. 🎮 电子游戏
+    </h3>
+    
+    <figure style="margin: 20px 0; text-align: center; page-break-inside: avoid;">
+      <img src="C:/Users/doris/.openclaw/workspace/trends/screenshots/amazon-videogames-20260317-141328.png" alt="🎮 电子游戏 Top 6" 
+           style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      <figcaption style="color: #666; font-size: 12px; margin-top: 12px;">
+        📅  | 💾 60.9 KB | 
+        <strong>🎮 电子游戏</strong> · Amazon New Releases
+      </figcaption>
+    </figure>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <p style="margin: 0 0 8px 0;"><strong>📊 数据分析维度：</strong></p>
+      <ul style="margin: 0; padding-left: 20px; color: #555; line-height: 1.8;">
+        <li><strong>排名变化:</strong> #1 - #6 商品位置</li>
+        <li><strong>价格区间:</strong> 分析热门商品定价策略</li>
+        <li><strong>评分分布:</strong> 星级 rating 和评论数</li>
+        <li><strong>新品占比:</strong> 区分首版发行 vs 常规上架</li>
+      </ul>
+      
+      <p style="margin: 12px 0 8px 0;"><strong>🔍 观察重点：</strong></p>
+      <p style="margin: 0; color: #666; line-height: 1.6;">
+        重点关注 AAA 大作 vs 独立游戏比例、主机平台分布
+      </p>
+    </div>
+  </section>
+  </section>
+
+  
+<section class="cross-category" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 12px; color: white; margin: 40px 0;">
+  <h3 style="border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 15px; margin-bottom: 20px;">
+    🔗 跨品类趋势洞察
+  </h3>
+  
+  <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+    <thead>
+      <tr style="background: rgba(0,0,0,0.2);">
+        <th style="padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.3);">洞察类型</th>
+        <th style="padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.3);">示例</th>
+        <th style="padding: 12px; text-align: left;">关注价值</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>IP 跨品类</strong></td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">《最后生还者》→ Games + Books + Movies</td>
+        <td style="padding: 12px;">识别现象级 IP</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>品牌延伸</strong></td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">Apple → Software + Movies + Music</td>
+        <td style="padding: 12px;">追踪生态布局</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px;"><strong>黑马产品</strong></td>
+        <td style="padding: 12px;">新上榜但评分 > 4.5 的商品</td>
+        <td style="padding: 12px;">发现潜力新品</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+  <section>
+    <h2>🛠️ 后续优化方向</h2>
+    <ul style="line-height: 2; color: #555;">
+      <li><strong>[TODO]</strong> OCR 文字提取（Tesseract/Azure Form Recognizer）</li>
+      <li><strong>[TODO]</strong> JSON 结构化数据导出 API</li>
+      <li><strong>[TODO]</strong> Slack/Discord 实时通知集成</li>
+      <li><strong>[TODO]</strong> Google Trends 数据交叉验证</li>
+      <li><strong>[TODO]</strong> Python 自动化处理管道</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>此报告由 <strong>OpenClaw Amazon Trends Skill</strong> 自动生成</p>
+    <p>报告版本：v2.0 | 维护日期：2026-03-17</p>
+    <p style="margin-top: 10px; font-size: 12px; opacity: 0.7;">
+      ⚠️ 建议使用 Chrome/Safari/Edge 打开查看最佳效果<br>
+      💡 Ctrl/Cmd + P 可直接打印或保存为 PDF
+    </p>
+  </footer>
+
+</body>
+</html>

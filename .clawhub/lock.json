@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving-agent": {
+      "version": "3.0.13",
+      "installedAt": 1775820302551
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1775821142370
+    },
+    "ontology": {
+      "version": "1.0.4",
+      "installedAt": 1775821741150
+    },
+    "agent-browser-clawdbot": {
+      "version": "0.1.0",
+      "installedAt": 1775822221770
+    },
+    "openclaw-tavily-search": {
+      "version": "0.1.0",
+      "installedAt": 1775822357943
+    },
+    "trello": {
+      "version": "1.0.0",
+      "installedAt": 1775823721133
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1775823781695
+    },
+    "pls-canvas-design": {
+      "version": "1.0.0",
+      "installedAt": 1775969587248
+    }
+  }
+}

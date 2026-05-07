@@ -1,94 +1,31 @@
-# OpenClaw runtime / session
-.openclaw/
-!.openclaw/workspace/
+# 临时脚本
+send_*.py
+send_*.js
+send_*.ps1
+debug_*.py
+analyze_*.py
+auto_*.py
+convert_*.py
+create_*.py
 
-# Git
-.git/
+# 测试/临时文件
+test.pdf
+test_*.png
+temp_*.json
 
-# Node / JS
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# 字体资源（体积大）
+torras_fonts/
+torras_study/
 
 # Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
+.env
 
-# OS / editor
+# Node
+node_modules/
+
+# OS
 .DS_Store
 Thumbs.db
-*.tmp
-*.temp
-
-# Logs
-*.log
-logs/
-/tmp/
-
-# Archives / generated binaries
-*.zip
-*.gz
-*.tar
-*.7z
-*.rar
-*.exe
-*.dll
-*.so
-*.dylib
-*.pdf
-*.jpg
-*.jpeg
-*.png
-*.webp
-*.gif
-*.mp4
-*.mov
-*.mp3
-*.wav
-
-# Build / generated reports
-coverage/
-dist/
-build/
-test-exports/
-trends-complete/
-trends-final/screenshots/
-trends-top10/
-trends-top10-final/
-trends-top10-v2/
-trends-ultra/screenshots/
-trends-v3/screenshots/
-trends/screenshots/
-trends-optimized/
-
-# Ad-hoc exports / local artifacts
-*.xlsx
-car_survey_chart.html
-amazon-new-releases.png
-amazon-trend-analysis-*.png
-trends-*.png
-received_image.jpg
-
-# OpenClaw sessions / local agent state
-agents/*/sessions/
-agents/*/memory/
-
-# Secrets / identity / paired state
-identity/
-devices/
-paired.json
-*.pem
-*.key
-*.token
-.env
-.env.*
-
-# Bridge local session state
-**/bridge-session.json
-**/web-bridge-session.json
+desktop.ini

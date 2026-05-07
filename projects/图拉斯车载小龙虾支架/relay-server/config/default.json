@@ -1,0 +1,40 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "path": "/relay",
+    "maxConnections": 10000,
+    "pingInterval": 30000,
+    "pingTimeout": 10000
+  },
+  "auth": {
+    "nonceMaxAge": 300000,
+    "nonceCleanupInterval": 60000,
+    "tokenMaxAge": 86400000,
+    "tokenRefreshThreshold": 3600000,
+    "signatureWindow": 300000
+  },
+  "rateLimit": {
+    "enabled": true,
+    "windowMs": 60000,
+    "maxRequests": 100,
+    "maxAuthAttempts": 5,
+    "blockDuration": 300000
+  },
+  "security": {
+    "requireSignedMessages": true,
+    "allowDeviceReconnect": true,
+    "maxDevicesPerBridge": 10,
+    "trustedProxies": []
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "includeTimestamp": true,
+    "maskSensitive": true
+  },
+  "metrics": {
+    "enabled": true,
+    "port": 9090
+  }
+}

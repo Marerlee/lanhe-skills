@@ -1,0 +1,13 @@
+{
+  "name": "@turas/bridge",
+  "version": "1.0.0",
+  "description": "小龙虾车载支架 - 桥接程序",
+  "main": "src/bridge.js",
+  "scripts": {
+    "start": "node src/bridge.js",
+    "dev": "node --watch src/bridge.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

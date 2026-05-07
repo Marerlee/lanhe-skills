@@ -1,0 +1,348 @@
+/**
+ * 消息路由器
+ *
+ * P8设计要点：
+ * 1. 消息验证 - Schema校验、权限校验
+ * 2. 消息转换 - 协议转换（设备协议 <-> 桥接协议）
+ * 3. 消息分发 - 正确路由到目标
+ * 4. 消息监控 - 统计、告警
+ */
+
+const crypto = require('crypto');
+const { createLogger } = require('../utils/Logger');
+const { MessageType } = require('../session/Manager');
+
+const logger = createLogger('MessageRouter');
+
+/**
+ * 消息错误码
+ */
+const RoutingError = {
+  INVALID_MESSAGE: { code: 'ROUTER_INVALID_MESSAGE', status: 400 },
+  TARGET_NOT_FOUND: { code: 'ROUTER_TARGET_NOT_FOUND', status: 404 },
+  PERMISSION_DENIED: { code: 'ROUTER_PERMISSION_DENIED', status: 403 },
+  QUEUE_FULL: { code: 'ROUTER_QUEUE_FULL', status: 503 },
+  RATE_LIMITED: { code: 'ROUTER_RATE_LIMITED', status: 429 }
+};
+
+/**
+ * 消息路由器
+ */
+class MessageRouter {
+  /**
+   * @param {Object} options
+   * @param {import('../session/Manager').SessionManager} options.sessionManager
+   * @param {import('../device/Manager').DeviceManager} options.deviceManager
+   * @param {import('../auth').Authenticator} options.authenticator
+   */
+  constructor({ sessionManager, deviceManager, authenticator }) {
+    this.sessionManager = sessionManager;
+    this.deviceManager = deviceManager;
+    this.authenticator = authenticator;
+
+    /** @type {Map<string, Function>} - messageType -> handler */
+    this.handlers = new Map();
+
+    /** 消息统计 */
+    this.stats = {
+      received: 0,
+      routed: 0,
+      failed: 0,
+      byType: {}
+    };
+
+    // 注册默认处理器
+    this._registerDefaultHandlers();
+
+    // 监听会话事件
+    this.sessionManager.on('message.routed', (msg) => {
+      this.stats.routed++;
+    });
+  }
+
+  /**
+   * 注册消息处理器
+   * @param {string} type
+   * @param {Function} handler
+   */
+  registerHandler(type, handler) {
+    this.handlers.set(type, handler);
+    logger.debug('Handler registered', { type });
+  }
+
+  /**
+   * 注册默认处理器
+   * @private
+   */
+  _registerDefaultHandlers() {
+    // 设备到桥接程序
+    this.registerHandler(MessageType.DEVICE_TO_BRIDGE, this._handleDeviceToBridge.bind(this));
+
+    // 桥接到设备
+    this.registerHandler(MessageType.BRIDGE_TO_DEVICE, this._handleBridgeToDevice.bind(this));
+
+    // 桥接到云端
+    this.registerHandler(MessageType.BRIDGE_TO_CLOUD, this._handleBridgeToCloud.bind(this));
+
+    // 云端到桥接程序
+    this.registerHandler(MessageType.CLOUD_TO_BRIDGE, this._handleCloudToBridge.bind(this));
+  }
+
+  /**
+   * 路由消息
+   * @param {Object} message
+   * @param {Object} context - 认证上下文
+   * @returns {{success: boolean, messageId?: string, error?: Object}}
+   */
+  async route(message, context) {
+    this.stats.received++;
+
+    // 1. 验证消息格式
+    const validation = this._validateMessage(message);
+    if (!validation.valid) {
+      this.stats.failed++;
+      return { success: false, error: validation.error };
+    }
+
+    // 2. 权限检查
+    const permission = this._checkPermission(message, context);
+    if (!permission.granted) {
+      this.stats.failed++;
+      return { success: false, error: permission.error };
+    }
+
+    // 3. 查找处理器
+    const handler = this.handlers.get(message.type);
+    if (!handler) {
+      this.stats.failed++;
+      return {
+        success: false,
+        error: { ...RoutingError.INVALID_MESSAGE, detail: `Unknown message type: ${message.type}` }
+      };
+    }
+
+    // 4. 执行路由
+    try {
+      const result = await handler(message, context);
+      this._updateTypeStats(message.type, 'success');
+      return result;
+    } catch (e) {
+      logger.error('Routing failed', { error: e.message, type: message.type });
+      this.stats.failed++;
+      this._updateTypeStats(message.type, 'error');
+      return { success: false, error: { code: 'ROUTING_ERROR', detail: e.message } };
+    }
+  }
+
+  /**
+   * 验证消息格式
+   * @private
+   */
+  _validateMessage(message) {
+    if (!message || typeof message !== 'object') {
+      return { valid: false, error: { ...RoutingError.INVALID_MESSAGE, detail: 'Message must be an object' } };
+    }
+
+    if (!message.type) {
+      return { valid: false, error: { ...RoutingError.INVALID_MESSAGE, detail: 'Message type is required' } };
+    }
+
+    if (!message.id) {
+      // 自动生成ID
+      message.id = this._generateMessageId();
+    }
+
+    if (!message.timestamp) {
+      message.timestamp = Date.now();
+    }
+
+    return { valid: true };
+  }
+
+  /**
+   * 权限检查
+   * @private
+   */
+  _checkPermission(message, context) {
+    if (!context?.isAuthenticated()) {
+      return {
+        granted: false,
+        error: { ...RoutingError.PERMISSION_DENIED, detail: 'Not authenticated' }
+      };
+    }
+
+    // 设备只能发送自己的消息
+    if (message.from && context.deviceId && message.from !== context.deviceId) {
+      return {
+        granted: false,
+        error: { ...RoutingError.PERMISSION_DENIED, detail: 'Cannot send from another device' }
+      };
+    }
+
+    return { granted: true };
+  }
+
+  /**
+   * 处理设备到桥接程序的消息
+   * @private
+   */
+  async _handleDeviceToBridge(message, context) {
+    // 查找目标桥接程序
+    const device = this.deviceManager.devices.get(message.from);
+    if (!device || !device.bridgeId) {
+      // 设备未绑定桥接，尝试通过会话查找
+      const session = this.sessionManager.deviceSessions.get(message.from);
+      if (!session) {
+        return { success: false, error: { ...RoutingError.TARGET_NOT_FOUND, detail: 'Device not registered' } };
+      }
+    }
+
+    // 路由到桥接程序的会话
+    const bridgeId = device?.bridgeId || session?.bridgeSession?.bridgeId;
+    const result = this.sessionManager.routeMessage({
+      ...message,
+      type: MessageType.BRIDGE_TO_CLOUD // 转为云端消息
+    });
+
+    // 通知桥接程序
+    if (result.delivered) {
+      this.deviceManager.broadcastToOwner(message.from, {
+        type: 'message',
+        messageId: message.id,
+        from: message.from,
+        payload: message.payload
+      });
+    }
+
+    return { success: result.delivered, messageId: message.id };
+  }
+
+  /**
+   * 处理桥接到设备的消息
+   * @private
+   */
+  async _handleBridgeToDevice(message, context) {
+    const { to, payload } = message;
+
+    // 查找设备连接
+    const deviceConn = this.deviceManager.getDeviceConnection(to);
+    if (!deviceConn) {
+      // 设备离线，存入队列
+      const session = this.sessionManager.deviceSessions.get(to);
+      if (session) {
+        session.enqueue(message);
+        return { success: true, messageId: message.id, queued: true };
+      }
+      return { success: false, error: { ...RoutingError.TARGET_NOT_FOUND, detail: 'Device not found' } };
+    }
+
+    // 发送到设备
+    if (deviceConn.ws?.readyState === 1) { // OPEN
+      deviceConn.ws.send(JSON.stringify({
+        type: 'message',
+        id: message.id,
+        payload
+      }));
+      return { success: true, messageId: message.id };
+    }
+
+    return { success: false, error: { ...RoutingError.TARGET_NOT_FOUND, detail: 'Device connection not open' } };
+  }
+
+  /**
+   * 处理桥接到云端的消息
+   * @private
+   */
+  async _handleBridgeToCloud(message, context) {
+    // 转发到OpenClaw Gateway（待实现）
+    logger.info('Bridge to cloud message', {
+      bridgeId: context.bridgeId,
+      messageId: message.id
+    });
+
+    this._emit('cloud.message', {
+      from: context.bridgeId,
+      message
+    });
+
+    return { success: true, messageId: message.id };
+  }
+
+  /**
+   * 处理云端到桥接程序的消息
+   * @private
+   */
+  async _handleCloudToBridge(message, context) {
+    const { to, payload } = message;
+
+    const bridgeSession = this.sessionManager.bridgeSessions.get(to);
+    if (!bridgeSession) {
+      return { success: false, error: { ...RoutingError.TARGET_NOT_FOUND, detail: 'Bridge not found' } };
+    }
+
+    // 存入队列
+    bridgeSession.enqueue(message);
+
+    // 尝试直接推送
+    // （实际推送逻辑由BridgeSession.getMessages处理）
+
+    return { success: true, messageId: message.id };
+  }
+
+  /**
+   * 生成消息ID
+   * @private
+   */
+  _generateMessageId() {
+    return `msg_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+  }
+
+  /**
+   * 更新类型统计
+   * @private
+   */
+  _updateTypeStats(type, status) {
+    if (!this.stats.byType[type]) {
+      this.stats.byType[type] = { success: 0, error: 0 };
+    }
+    this.stats.byType[type][status]++;
+  }
+
+  /**
+   * 事件
+   */
+  on(event, handler) {
+    if (!this._eventHandlers) {
+      this._eventHandlers = new Map();
+    }
+    if (!this._eventHandlers.has(event)) {
+      this._eventHandlers.set(event, []);
+    }
+    this._eventHandlers.get(event).push(handler);
+  }
+
+  _emit(event, data) {
+    const handlers = this._eventHandlers?.get(event) || [];
+    for (const handler of handlers) {
+      try {
+        handler(data);
+      } catch (e) {
+        logger.error('Event handler error', { event, error: e.message });
+      }
+    }
+  }
+
+  /**
+   * 获取统计
+   * @returns {Object}
+   */
+  getStats() {
+    return {
+      ...this.stats,
+      session: this.sessionManager.getStats()
+    };
+  }
+}
+
+module.exports = MessageRouter;
+module.exports.RoutingError = RoutingError;

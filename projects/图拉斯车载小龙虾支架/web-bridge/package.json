@@ -1,0 +1,12 @@
+{
+  "name": "@turas/web-bridge",
+  "version": "1.0.0",
+  "description": "小龙虾车载支架 - Web 测试界面",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

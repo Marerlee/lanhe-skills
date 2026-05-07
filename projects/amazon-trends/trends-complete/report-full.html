@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Top 10 新品榜单 - 完整分析报告</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; max-width: 1400px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #eee; }
+    h1 { color: #fff; text-align: center; border-bottom: 3px solid #00d4ff; padding-bottom: 20px; font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    .intro { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
+    .intro p { margin: 10px 0; color: #ccc; }
+    .category-section { background: linear-gradient(145deg, #1e3a5f 0%, #0d2137 100%); border-radius: 16px; padding: 25px; margin: 25px 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .category-title { color: #00d4ff; font-size: 1.8em; margin: 0 0 20px 0; padding-bottom: 15px; border-bottom: 2px solid rgba(0,212,255,0.3); display: flex; align-items: center; gap: 15px; }
+    .category-title .icon { font-size: 1.2em; }
+    
+    /* 榜单表格样式 */
+    .product-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; }
+    .product-table th { background: linear-gradient(90deg, #00d4ff 0%, #0066cc 100%); color: #fff; padding: 15px; text-align: left; font-weight: 600; }
+    .product-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); vertical-align: top; }
+    .product-table tr:hover { background: rgba(0,212,255,0.1); }
+    .product-table .rank { font-size: 1.5em; font-weight: bold; color: #00d4ff; width: 60px; text-align: center; }
+    .product-table .rank-1 { color: #ffd700; font-size: 1.8em; }
+    .product-table .rank-2 { color: #c0c0c0; font-size: 1.6em; }
+    .product-table .rank-3 { color: #cd7f32; font-size: 1.6em; }
+    .product-table .title { font-weight: 600; color: #fff; font-size: 1.1em; }
+    .product-table .author { color: #aaa; }
+    .product-table .platform { display: inline-block; background: #0066cc; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin: 2px; }
+    
+    /* 截图展示 */
+    .screenshot-container { margin: 20px 0; text-align: center; }
+    .screenshot-container img { max-width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .screenshot-caption { color: #888; font-size: 0.9em; margin-top: 10px; }
+    
+    footer { text-align: center; padding: 30px; color: #666; font-size: 14px; }
+    
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.8em; }
+      .product-table { font-size: 0.9em; }
+      .product-table th, .product-table td { padding: 10px 5px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Amazon 新品热销榜 Top 10</h1>
+  
+  <div class="intro">
+    <p><strong>📅 生成时间：</strong> 2026-03-17</p>
+    <p><strong>📌 数据来源：</strong> https://www.amazon.com/gp/new-releases</p>
+    <p><strong>✨ 特点：</strong> AI 图像识别 + OCR 文字提取，精准识别每个商品信息</p>
+  </div>
+
+  <!-- Books -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">📚</span> Books 图书</h2>
+    <div class="screenshot-container">
+      <img src="screenshots/books-full.png" alt="Books Top 10" />
+      <p class="screenshot-caption">📷 原始榜单截图</p>
+    </div>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:60px;">排名</th>
+          <th>书名</th>
+          <th>作者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank rank-1">#1</td><td class="title">Judge Stone: A Novel</td><td class="author">James Patterson</td></tr>
+        <tr><td class="rank rank-2">#2</td><td class="title">18 Days in Heaven</td><td class="author">Gabe Poirot</td></tr>
+        <tr><td class="rank rank-3">#3</td><td class="title">Oversharing</td><td class="author">Courtney LaCorte</td></tr>
+        <tr><td class="rank">#4</td><td class="title">Everyday Genius</td><td class="author">Nelson Dellis</td></tr>
+        <tr><td class="rank">#5</td><td class="title">Nothing Is Impossible with God</td><td class="author">Shannon Bream</td></tr>
+        <tr><td class="rank">#6</td><td class="title">You with the Sad Eyes</td><td class="author">Christine Appleby</td></tr>
+        <tr><td class="rank">#7</td><td class="title">The Hybrid Prince (Wings of Fire)</td><td class="author">Tui T. Sutherland</td></tr>
+        <tr><td class="rank">#8</td><td class="title">Apple: The First 50 Years</td><td class="author">David Pogue</td></tr>
+        <tr><td class="rank">#9</td><td class="title">A World Appears</td><td class="author">Michael Pollan</td></tr>
+        <tr><td class="rank">#10</td><td class="title">Better Than a Touchdown</td><td class="author">Jalen Hurts</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Movies -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">🎬</span> Movies & TV 影视</h2>
+    <div class="screenshot-container">
+      <img src="screenshots/movies-full.png" alt="Movies Top 10" />
+      <p class="screenshot-caption">📷 原始榜单截图</p>
+    </div>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:60px;">排名</th>
+          <th>电影/剧集</th>
+          <th>版本</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank rank-1">#1</td><td class="title">Zootopia 2</td><td><span class="platform">蓝光+数字版</span></td></tr>
+        <tr><td class="rank rank-2">#2</td><td class="title">Zootopia 2</td><td><span class="platform">DVD</span></td></tr>
+        <tr><td class="rank rank-3">#3</td><td class="title">One Battle After Another</td><td><span class="platform">4K Ultra HD</span></td></tr>
+        <tr><td class="rank">#4</td><td class="title">David</td><td><span class="platform">DVD</span></td></tr>
+        <tr><td class="rank">#5</td><td class="title">Good Luck, Have Fun, Don't Die</td><td><span class="platform">4K Ultra HD</span></td></tr>
+        <tr><td class="rank">#6</td><td class="title">The Housemaid</td><td><span class="platform">蓝光+数字+4K</span></td></tr>
+        <tr><td class="rank">#7</td><td class="title">Predator: Badlands</td><td><span class="platform">UHD组合</span></td></tr>
+        <tr><td class="rank">#8</td><td class="title">One Battle After Another</td><td><span class="platform">DVD</span></td></tr>
+        <tr><td class="rank">#9</td><td class="title">One Battle After Another</td><td><span class="platform">蓝光+数字</span></td></tr>
+        <tr><td class="rank">#10</td><td class="title">Song Sung Blue</td><td><span class="platform">DVD</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Video Games -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">🎮</span> Video Games 游戏</h2>
+    <div class="screenshot-container">
+      <img src="screenshots/videogames-full.png" alt="Games Top 10" />
+      <p class="screenshot-caption">📷 原始榜单截图</p>
+    </div>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:60px;">排名</th>
+          <th>游戏名称</th>
+          <th>平台</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank rank-1">#1</td><td class="title">Pokémon Pikopiko</td><td><span class="platform">Nintendo Switch</span></td></tr>
+        <tr><td class="rank rank-2">#2</td><td class="title">KontrolFreek YourFriendCycle</td><td><span class="platform">PS5</span> <span class="platform">PS4</span></td></tr>
+        <tr><td class="rank rank-3">#3</td><td class="title">MLB The Show 24</td><td><span class="platform">PlayStation 5</span></td></tr>
+        <tr><td class="rank">#4</td><td class="title">Crimson Desert</td><td><span class="platform">PlayStation 5</span></td></tr>
+        <tr><td class="rank">#5</td><td class="title">Resident Evil Requiem</td><td><span class="platform">PS5</span></td></tr>
+        <tr><td class="rank">#6</td><td class="title">FINAL FANTASY VII REMAKE</td><td><span class="platform">Nintendo Switch</span></td></tr>
+        <tr><td class="rank">#7</td><td class="title">WWE 2K24</td><td><span class="platform">PlayStation 5</span></td></tr>
+        <tr><td class="rank">#8</td><td class="title">FATAL FRAME II</td><td><span class="platform">PS5</span> <span class="platform">PS4</span></td></tr>
+        <tr><td class="rank">#9</td><td class="title">DRAGON QUEST VII</td><td><span class="platform">Nintendo Switch</span></td></tr>
+        <tr><td class="rank">#10</td><td class="title">GameSir G7 Pro 手柄</td><td><span class="platform">Xbox</span> <span class="platform">PC</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Music -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">🎵</span> Music 音乐</h2>
+    <div class="screenshot-container">
+      <img src="screenshots/music-full.png" alt="Music Top 10" />
+      <p class="screenshot-caption">📷 原始榜单截图</p>
+    </div>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:60px;">排名</th>
+          <th>专辑</th>
+          <th>艺术家</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank rank-1">#1</td><td class="title">The Romantic</td><td class="author">Bruno Mars</td></tr>
+        <tr><td class="rank rank-2">#2</td><td class="title">Mutiny After Midnight</td><td class="author">Johnny Blue Skies</td></tr>
+        <tr><td class="rank rank-3">#3</td><td class="title">Kiss All The Time</td><td class="author">Harry Styles</td></tr>
+        <tr><td class="rank">#4</td><td class="title">Kiss All The Time</td><td class="author">Harry Styles</td></tr>
+        <tr><td class="rank">#5</td><td class="title">Into Oblivion</td><td class="author">Lamb of God</td></tr>
+        <tr><td class="rank">#6</td><td class="title">BTS ANIMISM</td><td class="author">BTS</td></tr>
+        <tr><td class="rank">#7</td><td class="title">A Pound of Feathers</td><td class="author">The Black Crowes</td></tr>
+        <tr><td class="rank">#8</td><td class="title">EPIC: Elvis Presley</td><td class="author">Elvis Presley</td></tr>
+        <tr><td class="rank">#9</td><td class="title">Mutiny After Midnight</td><td class="author">Johnny Blue Skies</td></tr>
+        <tr><td class="rank">#10</td><td class="title">DATA TIRA MAS FOTOS</td><td class="author">Bad Bunny</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Software -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">💻</span> Software 软件</h2>
+    <p style="color:#888;text-align:center;padding:40px;">⚠️ 当前暂无新品数据</p>
+  </div>
+
+  <!-- Digital Music -->
+  <div class="category-section">
+    <h2 class="category-title"><span class="icon">🎶</span> Digital Music 数字音乐</h2>
+    <p style="color:#888;text-align:center;padding:40px;">⚠️ 当前暂无新品数据</p>
+  </div>
+
+  <footer>
+    <p>📊 此报告由 <strong>OpenClaw AI</strong> 自动生成 | 版本：v2.0-Pro</p>
+    <p>🔧 技术支持：Chromium 截图 + AI 图像识别 + OCR 文字提取</p>
+    <p>⏰ 数据时间：2026-03-17 16:00</p>
+  </footer>
+</body>
+</html>

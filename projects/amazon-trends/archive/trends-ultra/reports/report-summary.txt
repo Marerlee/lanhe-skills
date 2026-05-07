@@ -1,0 +1,23 @@
+📊 Amazon 新品热销榜 - 全品类综合分析报告
+===========================================
+生成时间：2026/03/17 14:42
+数据来源：https://www.amazon.com/gp/new-releases
+
+✅ 已抓取 6 个品类完整榜单
+
+各品类 Top 6 商品列表：
+
+【📚 图书】amazon-books-20260317-144216.png (2.3M)
+【🎵 音乐】amazon-music-20260317-144216.png (3.8M)
+【🎬 影视】amazon-movies-20260317-144216.png (3.8M)
+【🎮 游戏】amazon-videogames-20260317-144216.png (3.2M)
+【💻 软件】amazon-software-20260317-144216.png (314K)
+【🎶 数字音乐】amazon-digitalmusic-20260317-144216.png (290K)
+
+完整 HTML 报告位于：
+C:/Users/doris/.openclaw/workspace/trends-ultra/reports/report-complete.html
+
+使用方法：
+1. 在电脑上直接打开 HTML 文件即可查看
+2. 所有截图已内嵌，无需其他文件
+3. Ctrl+P 可保存为 PDF

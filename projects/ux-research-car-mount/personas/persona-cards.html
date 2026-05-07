@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图拉斯车载支架 - 用户画像</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f7;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #86868b;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .persona-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .persona-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        
+        .card-header .info h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+        
+        .card-header .info .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .card-body {
+            padding: 0 24px 24px;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .section-content {
+            font-size: 14px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .info-item .label {
+            font-size: 11px;
+            color: #86868b;
+        }
+        
+        .info-item .value {
+            font-size: 14px;
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+        
+        .highlight-box {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+        
+        .highlight-box p {
+            font-size: 13px;
+            color: #1d1d1f;
+            line-height: 1.5;
+        }
+        
+        .quote {
+            font-style: italic;
+            color: #515154;
+        }
+        
+        .emotion-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .emotion-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        /* 林薇 - 玫瑰金风格 */
+        .card-linwei .card-header { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); }
+        .card-linwei .avatar { background: #ec407a; color: white; }
+        .card-linwei .tag { background: #fce4ec; color: #c2185b; }
+        .card-linwei .emotion-tag { background: #fce4ec; color: #c2185b; }
+        
+        /* 陈思远 - 深蓝风格 */
+        .card-chensiyuan .card-header { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
+        .card-chensiyuan .avatar { background: #1565c0; color: white; }
+        .card-chensiyuan .tag { background: #e3f2fd; color: #1565c0; }
+        .card-chensiyuan .emotion-tag { background: #e3f2fd; color: #1565c0; }
+        
+        /* 张雨晨 - 科技橙风格 */
+        .card-zhangyuchen .card-header { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); }
+        .card-zhangyuchen .avatar { background: #e65100; color: white; }
+        .card-zhangyuchen .tag { background: #fff3e0; color: #e65100; }
+        .card-zhangyuchen .emotion-tag { background: #fff3e0; color: #e65100; }
+        
+        /* 王思涵 - 苹果白风格 */
+        .card-wangsihan .card-header { background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%); }
+        .card-wangsihan .avatar { background: #1d1d1f; color: white; }
+        .card-wangsihan .tag { background: #f5f5f7; color: #1d1d1f; }
+        .card-wangsihan .emotion-tag { background: #f5f5f7; color: #1d1d1f; }
+        
+        @media (max-width: 540px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔬 图拉斯车载支架 - 用户画像</h1>
+        <p>基于用户研究洞察，4大核心用户类型</p>
+    </div>
+    
+    <div class="cards-container">
+        
+        <!-- 林薇 -->
+        <div class="persona-card card-linwei">
+            <div class="card-header">
+                <div class="avatar">👩</div>
+                <div class="info">
+                    <h2>林薇</h2>
+                    <div class="tags">
+                        <span class="tag">精致女车主</span>
+                        <span class="tag">30岁 · 上海</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section">
+                    <div class="section-title">基础信息</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">职业</span>
+                            <span class="value">外资快消品牌市场专员</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">车型</span>
+                            <span class="value">宝马1系</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">日均驾驶</span>
+                            <span class="value">40分钟</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">使用频率</span>
+                            <span class="value">1-2次/天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">心理画像</div>
+                    <div class="highlight-box">
+                        <p class="quote">"我不希望一上车看到一个很丑的塑料支架，感觉整个车的档次都被拉低了。"</p>
+                    </div>
+                    <div class="emotion-tags">
+                        <span class="emotion-tag">🎀 追求"不费力的精致"</span>
+                        <span class="emotion-tag">💄 车内是私人小世界</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">购买动机</div>
+                    <div class="section-content">
+                        <strong>触发点：</strong>审美升级（"看腻了"）> 功能故障<br>
+                        <strong>愿意付溢价：</strong>为颜值付30-50%
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">崩溃时刻 ⚠️</div>
+                    <div class="section-content">
+                        • 安装复杂，超过2分钟开始烦躁<br>
+                        • 手机壳被夹出印痕<br>
+                        • 充电发烫担心伤电池
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">推荐动机 🎯</div>
+                    <div class="section-content">
+                        闺蜜当面夸支架好看 → 立刻发链接<br>
+                        推荐理由："好看！跟我的车很配！"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 陈思远 -->
+        <div class="persona-card card-chensiyuan">
+            <div class="card-header">
+                <div class="avatar">👨</div>
+                <div class="info">
+                    <h2>陈思远</h2>
+                    <div class="tags">
+                        <span class="tag">闷骚精英男</span>
+                        <span class="tag">38岁 · 深圳</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section">
+                    <div class="section-title">基础信息</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">职业</span>
+                            <span class="value">科技公司研发总监</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">车型</span>
+                            <span class="value">蔚来ET5</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">日均驾驶</span>
+                            <span class="value">1.5-2小时</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">使用频率</span>
+                            <span class="value">4-6次/天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">心理画像</div>
+                    <div class="highlight-box">
+                        <p class="quote">"不惹麻烦、不丢面子、不碍事。好的设计就是没有存在感的设计。"</p>
+                    </div>
+                    <div class="emotion-tags">
+                        <span class="emotion-tag">🎩 隐性审美者</span>
+                        <span class="emotion-tag">💼 低调有品质</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">购买动机</div>
+                    <div class="section-content">
+                        <strong>触发点：</strong>功能需求（换车/旧支架坏）> 审美<br>
+                        <strong>愿意付溢价：</strong>为可靠付50-100%
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">崩溃时刻 ⚠️</div>
+                    <div class="section-content">
+                        • 充电速度与宣传不符，"说好15W实际只有8W"<br>
+                        • 夹持太紧取不下来，"这设计不合理"<br>
+                        • 三个月后开始有异响
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">推荐动机 🎯</div>
+                    <div class="section-content">
+                        同事/朋友明确表示要买并询问建议<br>
+                        推荐理由："品质还行，用了X个月没出过问题"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 张雨晨 -->
+        <div class="persona-card card-zhangyuchen">
+            <div class="card-header">
+                <div class="avatar">🚗</div>
+                <div class="info">
+                    <h2>张雨晨</h2>
+                    <div class="tags">
+                        <span class="tag">高端新能源车主</span>
+                        <span class="tag">32岁 · 杭州</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section">
+                    <div class="section-title">基础信息</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">职业</span>
+                            <span class="value">电商公司产品经理</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">车型</span>
+                            <span class="value">小米SU7</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">日均驾驶</span>
+                            <span class="value">2小时</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">使用频率</span>
+                            <span class="value">6-8次/天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">心理画像</div>
+                    <div class="highlight-box">
+                        <p class="quote">"我是拿来用的，不是拿来看的。贵的通常性能更稳定。"</p>
+                    </div>
+                    <div class="emotion-tags">
+                        <span class="emotion-tag">📱 科技原住民</span>
+                        <span class="emotion-tag">🔥 功能 > 外观</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">购买动机</div>
+                    <div class="section-content">
+                        <strong>触发点：</strong>NOA需要稳定导航手机位<br>
+                        <strong>愿意付溢价：</strong>为性能和安全付溢价
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">崩溃时刻 ⚠️⭐⭐⭐⭐⭐</div>
+                    <div class="section-content">
+                        • 颠簸时手机偏移，涉及驾驶安全！<br>
+                        • 充电断断续续，NOA导航不稳定<br>
+                        • 夹持力太大差点把支架带下来
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">推荐动机 🎯</div>
+                    <div class="section-content">
+                        朋友买了新能源车后主动询问<br>
+                        推荐理由："Tora-ice散热确实有效，高速稳"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 王思涵 -->
+        <div class="persona-card card-wangsihan">
+            <div class="card-header">
+                <div class="avatar">📱</div>
+                <div class="info">
+                    <h2>王思涵</h2>
+                    <div class="tags">
+                        <span class="tag">iPhone重度用户</span>
+                        <span class="tag">28岁 · 成都</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section">
+                    <div class="section-title">基础信息</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">职业</span>
+                            <span class="value">广告公司创意总监</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">车型</span>
+                            <span class="value">特斯拉Model 3</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">日均驾驶</span>
+                            <span class="value">1小时</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">使用频率</span>
+                            <span class="value">3-5次/天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">心理画像</div>
+                    <div class="highlight-box">
+                        <p class="quote">"我不需要夹持，MagSafe轻轻一吸就好了。"</p>
+                    </div>
+                    <div class="emotion-tags">
+                        <span class="emotion-tag">🍎 苹果生态重度</span>
+                        <span class="emotion-tag">💎 MagSafe执念</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">购买动机</div>
+                    <div class="section-content">
+                        <strong>触发点：</strong>换了iPhone后旧支架不支持MagSafe<br>
+                        <strong>愿意付溢价：</strong>为苹果标准付溢价
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">崩溃时刻 ⚠️</div>
+                    <div class="section-content">
+                        • 磁吸力不够颠簸时滑落，"这不配叫MagSafe"<br>
+                        • 充电发烫担心电池健康<br>
+                        • 手机壳（Casetify）被夹出痕迹
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">推荐动机 🎯</div>
+                    <div class="section-content">
+                        朋友圈有人发问求推荐iPhone支架<br>
+                        推荐理由："MagSafe很稳！充电不发烫！"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; color: #86868b; font-size: 13px;">
+        <p>图拉斯车载支架 UX研究 | 2026-04-01</p>
+    </div>
+</body>
+</html>

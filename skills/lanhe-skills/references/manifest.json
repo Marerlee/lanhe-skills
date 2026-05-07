@@ -1,0 +1,13 @@
+{
+  "version": "2026-03-25",
+  "updated_at": "2026-03-25T07:17:00Z",
+  "skills": [
+    {
+      "name": "线材设计",
+      "skill_id": "cable-design",
+      "version": "1.0",
+      "summary": "输入线长(L)和最大电流(I)，计算USB线材绞合直径(D)",
+      "path": "skills/cable-design"
+    }
+  ]
+}
